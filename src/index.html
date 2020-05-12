@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html >
 <head>
-	<title>Hello World, AngularJS - ViralPatel.net</title>
+	<title>Surfaces Minérales Rennes</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 	<script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places&key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM"></script>
     <script src="http://rawgit.com/allenhwkim/angularjs-google-maps/master/build/scripts/ng-map.min.js"></script>
@@ -9,25 +14,63 @@
 
 </head>
 <body>
-	<div ng-app='app' ng-controller="map" > 
-		Write some text in textbox:
-		<input type="text" ng-model="sometext" />
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="#">Surfaces Minérales Rennes</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+		  <span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+		  <ul class="navbar-nav">
+			<li class="nav-item active">
+			  <a class="nav-link" href="#">Accueil <span class="sr-only">(current)</span></a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="#">Contact</a>
+			</li>
+			
+			
+			  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+				<a class="dropdown-item" href="#">Action</a>
+				<a class="dropdown-item" href="#">Another action</a>
+				<a class="dropdown-item" href="#">Something else here</a>
+			  </div>
+			</li>
+		  </ul>
+		</div>
+	  </nav>
+	
+	
+		
+	  </nav>
+	<div ng-app='app'>
 
-		<h1>Hello {{coulcontour}}</h1>
+
+	<div ng-controller="selector">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<ul class="navbar-nav" >
+		  <li class="nav-item active" ng-repeat="name in nom_polygone">
+			<a class="nav-link" href="#">{{name}}<span class="sr-only">(current)</span></a>
+		  </li>
+		</nav>
+		  
+		  
+		</ul>
+	</div>
+	<div ng-controller="map" > 
+		
 		<ng-map zoom="5" 
 		center="24.886436490787712, -70.2685546875" 
 		map-type-id="TERRAIN">
-	   <shape name="polygon" 
-		 
+	   <shape name="polygon"
+	     ng-repeat="polygon in polygons"
+		 paths="{{polygon.chemin}}"
 		 stroke-color="{{coulcontour}}"
 		 stroke-opacity="0.8"
 		 stroke-weight="2"
 		 fill-color="#FF0000"
-		 fill-opacity="0.35"
-		 paths="{{chemins}}"
-		 >
-		 
+		 fill-opacity="0.35">
 	   </shape>
  </div>
+</div>
 </body>
 </html>
