@@ -27,6 +27,7 @@ app.controller('map', function($scope, $http) {
                     $scope.surfaces[i].chemin.push([chemin[j][1], chemin[j][0]])
                 }
                 $scope.surfaces[i].centre = data.records[i].geometry.coordinates;
+               
                 $scope.surfaces[i].couleurinterieur = "#FF0000";
                 $scope.surfaces[i].opacitecontour = "0.8";
                 $scope.surfaces[i].opaciteinterieur = "0.35";
@@ -50,7 +51,20 @@ app.controller('map', function($scope, $http) {
 });
 
 // Controleur pour les sélecteurs de la carte
-app.controller('selector', function($scope) {
-    $scope.nom_polygone=["Select 1 ","Select 2","Select 3"]
+app.controller('selector', function($scope,$http) {
+    $http.get("https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=surfaces-minerales-du-jardin-du-thabor")
+    // En cas de succès (code retour = 200)
+    .success(function(data){
+
+        // On récupère le nombre de surfaces
+        var nb_surfaces = data.parameters.rows;
+        
+        $scope.nom_polygone={}
+        for(var i=0; i<nb_surfaces; i++){
+           $scope.nom_polygone[i] = "Surface "+i; 
+        }
+    });
+
+
 });
 
