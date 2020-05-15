@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngMap']);
+var app = angular.module('app', ['ngMap','ngRoute']);
 
 // Controleur de la carte
 app.controller('map', function($scope, $http) {
@@ -6,8 +6,8 @@ app.controller('map', function($scope, $http) {
     // Requête ajax récupérant les polygones représentants les surfaces minérales
     $http.get("https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=surfaces-minerales-du-jardin-du-thabor")
         // En cas de succès (code retour = 200)
-        .success(function(data){
-
+        .then(function(response){
+            var data = response.data;
             // On récupère le nombre de surfaces
             var nb_surfaces = data.parameters.rows;
 
@@ -54,8 +54,8 @@ app.controller('map', function($scope, $http) {
 app.controller('selector', function($scope,$http) {
     $http.get("https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=surfaces-minerales-du-jardin-du-thabor")
     // En cas de succès (code retour = 200)
-    .success(function(data){
-
+    .then(function(response){
+        var data = response.data;
         // On récupère le nombre de surfaces
         var nb_surfaces = data.parameters.rows;
         
