@@ -1,5 +1,12 @@
 var app = angular.module('app', ['ngMap','ngRoute']);
-
+app.config(function($routeProvider) {
+	$routeProvider
+		.when('/surface/:id', {
+			templateUrl: './html/surface.html',
+			controller: 'view'
+        });
+    });
+		
 // Controleur de la carte
 app.controller('map', function($scope, $http) {
 
@@ -61,10 +68,16 @@ app.controller('selector', function($scope,$http) {
         
         $scope.nom_polygone={}
         for(var i=0; i<nb_surfaces; i++){
-           $scope.nom_polygone[i] = "Surface "+i; 
+           $scope.nom_polygone[i]={}
+           $scope.nom_polygone[i].nom = "Surface "+i;
+           $scope.nom_polygone[i].href = "view.html#!/surface/"+i;
         }
+        console.log($scope.nom_polygone);
     });
 
+
+});
+app.controller('view', function($scope, $http) {
 
 });
 
