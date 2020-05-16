@@ -1,9 +1,10 @@
 
-<div ng-controller="view">
-    <ng-map zoom="20"
-    center="{{surface.center[0]}}, {{surface.center[1]}}"
+<div ng-controller="map">
+    <ng-map zoom="17"
+    center="48.114499, -1.669880"
     map-type-id="TERRAIN">
    <shape name="polygon"
+     ng-repeat="surface in surfaces"
      paths="{{surface.chemin}}"
      stroke-color="{{coulcontour}}"
      stroke-opacity="0.8"

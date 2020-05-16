@@ -1,8 +1,12 @@
 var app = angular.module('app', ['ngMap','ngRoute']);
 app.config(function($routeProvider) {
-	$routeProvider
+    $routeProvider
+        .when('/', {
+            templateUrl: './global.html',
+            controller: 'view'
+        })
 		.when('/surface/:id', {
-			templateUrl: './html/surface.html',
+			templateUrl: './surface.html',
 			controller: 'view'
         });
     });
@@ -20,7 +24,7 @@ app.controller('map', function($scope, $http) {
 
             // On crée un dictionnairequi va contenir toutes les surfaces
             $scope.surfaces = {};
-
+            $scope.nom_polygone={}
             // On crée le dictionnarie contenant les polygones et leurs paramètres
 
             for(var i=0; i<nb_surfaces; i++){
@@ -38,6 +42,7 @@ app.controller('map', function($scope, $http) {
                 $scope.surfaces[i].couleurinterieur = "#FF0000";
                 $scope.surfaces[i].opacitecontour = "0.8";
                 $scope.surfaces[i].opaciteinterieur = "0.35";
+           
             }
             console.log($scope.surfaces);
         });
@@ -68,16 +73,49 @@ app.controller('selector', function($scope,$http) {
         
         $scope.nom_polygone={}
         for(var i=0; i<nb_surfaces; i++){
-           $scope.nom_polygone[i]={}
-           $scope.nom_polygone[i].nom = "Surface "+i;
-           $scope.nom_polygone[i].href = "view.html#!/surface/"+i;
+            $scope.nom_polygone[i]={}
+            $scope.nom_polygone[i].nom = "Surface "+i;
+            $scope.nom_polygone[i].href = "#!/surface/"+i;
         }
         console.log($scope.nom_polygone);
     });
 
 
 });
-app.controller('view', function($scope, $http) {
+app.controller('view', function($scope,$routeParams,$http) {
+    var id = $routeParams.id ;
+    $http.get("https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=surfaces-minerales-du-jardin-du-thabor")
+        // En cas de succès (code retour = 200)
+        .then(function(response){
+            var data = response.data;
+            // On récupère le nombre de surfaces
+            var nb_surfaces = data.parameters.rows;
+
+            // On crée un dictionnairequi va contenir toutes les surfaces
+            var surfaces = {};
+           
+            // On crée le dictionnarie contenant les polygones et leurs paramètres
+
+            for(var i=0; i<nb_surfaces; i++){
+                // Création de la nouvelle surface
+                surfaces[i] = {};
+
+                // Création du chemin
+                var chemin = data.records[i].fields.geo_shape.coordinates[0];
+                surfaces[i].chemin = [];
+                for(var j=0; j<chemin.length; j++){
+                    surfaces[i].chemin.push([chemin[j][1], chemin[j][0]])
+                }
+                surfaces[i].centre = data.records[i].geometry.coordinates;
+               
+                surfaces[i].couleurinterieur = "#FF0000";
+                surfaces[i].opacitecontour = "0.8";
+                surfaces[i].opaciteinterieur = "0.35";
+           
+            }
+            $scope.surface = surfaces[id];
+            console.log( $scope.surface);
+        });
 
 });
 
