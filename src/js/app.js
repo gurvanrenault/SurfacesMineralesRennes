@@ -1,21 +1,22 @@
 
 var app = angular.module('app', ['ngMap','ngRoute']);
-
+// On configure l'application  en définissant les routes 
 app.config(function($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: './global.html',
-            controller: 'view'
+            templateUrl: './html/global.html',
+            controller: 'map'
         })
 		.when('/surface/:id', {
-			templateUrl: './surface.html',
+			templateUrl: './html/surface.html',
 			controller: 'view'
         });
     });
+// On crée un service pour que l'on puisse partagé des variables entre contrôleur
 app.service("sampleService", function () {
     this.liste_color = {}
 });		
-// Controleur de la carte
+// Controleur de la carte affichant toutes les surfaces 
 app.controller('map', function($scope, $http, sampleService) {
 
     // Requête ajax récupérant les polygones représentants les surfaces minérales
@@ -42,29 +43,16 @@ app.controller('map', function($scope, $http, sampleService) {
                     $scope.surfaces[i].chemin.push([chemin[j][1], chemin[j][0]])
                 }
                 $scope.surfaces[i].centre = data.records[i].geometry.coordinates;
-               
+                // On récupère la couleur attribué à la surface  
                 var couleur= sampleService.liste_color[i];
                 $scope.surfaces[i].couleurinterieur = couleur;
                 $scope.surfaces[i].opacitecontour = "0.8";
                 $scope.surfaces[i].opaciteinterieur = "1";
            
             }
-            console.log($scope.surfaces);
+            
         });
 
-    // $scope.sometext= "";
-    // $scope.coulcontour = "#FF0000";
-    // $scope.polygons= {}
-    // $scope.polygons[0] = new Object()
-    // $scope.polygons[0].chemin = "[[25.774252, -85.190262],[18.466465, -66.118292],[32.321384, -64.75737],[25.774252, -80.190262]]";
-    // $scope.polygons[0].couleurinterieur = "#FF0000";
-    // $scope.polygons[0].opacitecontour ="0.8";
-    // $scope.polygons[0].opaciteinterieur ="0.35";
-    // $scope.polygons[1] = new Object();
-    // $scope.polygons[1].chemin = "[[25.774252, -100.190262],[18.466465, -66.118292],[32.321384, -64.75737],[25.774252, -80.190262]]";
-    // $scope.polygons[1].couleurinterieur = "#FF0000";
-    // $scope.polygons[1].opacitecontour ="0.8";
-    // $scope.polygons[1].opaciteinterieur ="0.35";
 });
 
 // Controleur pour les sélecteurs de la carte
@@ -75,13 +63,18 @@ app.controller('selector', function($scope,$http,sampleService) {
         var data = response.data;
         // On récupère le nombre de surfaces
         var nb_surfaces = data.parameters.rows;
+       
         var colors = sampleService.liste_color;
+        // On définit la taille des éléments
+        $scope.size = 98/nb_surfaces
         $scope.nom_polygone={}
         for(var i=0; i<nb_surfaces; i++){
             $scope.nom_polygone[i]={}
-            
+            // On génère aléatoirement une couleur 
             couleur = getRandomColor()
+            // On initialise la variable partagée entre les controlleurs
             sampleService.liste_color[i]=couleur;
+
             $scope.nom_polygone[i].couleur = couleur
             $scope.nom_polygone[i].nom = "Surface "+i;
             $scope.nom_polygone[i].href = "#!/surface/"+i;
@@ -91,6 +84,8 @@ app.controller('selector', function($scope,$http,sampleService) {
 
 
 });
+
+// Controleur pour afficher une surface de la carte
 app.controller('view', function($scope,$routeParams,$http) {
     var id = $routeParams.id ;
     $http.get("https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=surfaces-minerales-du-jardin-du-thabor")
@@ -116,14 +111,13 @@ app.controller('view', function($scope,$routeParams,$http) {
                     surfaces[i].chemin.push([chemin[j][1], chemin[j][0]])
                 }
                 surfaces[i].centre = data.records[i].geometry.coordinates;
-               
                 surfaces[i].couleurinterieur = "#FF0000";
                 surfaces[i].opacitecontour = "0.8";
                 surfaces[i].opaciteinterieur = "0.35";
            
             }
             $scope.surface = surfaces[id];
-            console.log( $scope.surface);
+            
         });
 
 });

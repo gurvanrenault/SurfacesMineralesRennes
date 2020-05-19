@@ -1,9 +1,11 @@
-<h2>Surfaces minérales</h2>
+
 <div ng-controller="map" >
-    <ng-map class="googlemap"
+    <ng-map id="googlemap"
     zoom="17"
+    default-style="false"
     center="48.114499, -1.669880"
     map-type-id="TERRAIN"
+    onload="setMapSize()"
     >
    <shape name="polygon"
      ng-repeat="surface in surfaces"
@@ -12,6 +14,13 @@
      stroke-opacity="0.8"
      stroke-weight="2"
      fill-color={{surface.couleurinterieur}}
-     fill-opacity="0.35">
+     fill-opacity="1">
    </shape>
  </div>
+ <script type="text/javascript">
+ function setMapSize(){
+  var map = document.getElementById("googlemap");
+  map.addEventListener('o').style ="height:500px";
+  console.log(map.style)
+ }
+</script>
