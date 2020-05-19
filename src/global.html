@@ -1,15 +1,17 @@
-
-<div ng-controller="map">
-    <ng-map zoom="17"
+<h2>Surfaces minérales</h2>
+<div ng-controller="map" >
+    <ng-map class="googlemap"
+    zoom="17"
     center="48.114499, -1.669880"
-    map-type-id="TERRAIN">
+    map-type-id="TERRAIN"
+    >
    <shape name="polygon"
      ng-repeat="surface in surfaces"
      paths="{{surface.chemin}}"
      stroke-color="{{coulcontour}}"
      stroke-opacity="0.8"
      stroke-weight="2"
-     fill-color="#FF0000"
+     fill-color={{surface.couleurinterieur}}
      fill-opacity="0.35">
    </shape>
  </div>

@@ -1,4 +1,6 @@
+
 var app = angular.module('app', ['ngMap','ngRoute']);
+
 app.config(function($routeProvider) {
     $routeProvider
         .when('/', {
@@ -10,9 +12,11 @@ app.config(function($routeProvider) {
 			controller: 'view'
         });
     });
-		
+app.service("sampleService", function () {
+    this.liste_color = {}
+});		
 // Controleur de la carte
-app.controller('map', function($scope, $http) {
+app.controller('map', function($scope, $http, sampleService) {
 
     // Requête ajax récupérant les polygones représentants les surfaces minérales
     $http.get("https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=surfaces-minerales-du-jardin-du-thabor")
@@ -39,9 +43,11 @@ app.controller('map', function($scope, $http) {
                 }
                 $scope.surfaces[i].centre = data.records[i].geometry.coordinates;
                
-                $scope.surfaces[i].couleurinterieur = "#FF0000";
+                var couleur= sampleService.liste_color[i];
+                console.log(couleur)
+                $scope.surfaces[i].couleurinterieur = couleur;
                 $scope.surfaces[i].opacitecontour = "0.8";
-                $scope.surfaces[i].opaciteinterieur = "0.35";
+                $scope.surfaces[i].opaciteinterieur = "1";
            
             }
             console.log($scope.surfaces);
@@ -63,17 +69,21 @@ app.controller('map', function($scope, $http) {
 });
 
 // Controleur pour les sélecteurs de la carte
-app.controller('selector', function($scope,$http) {
+app.controller('selector', function($scope,$http,sampleService) {
     $http.get("https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=surfaces-minerales-du-jardin-du-thabor")
     // En cas de succès (code retour = 200)
     .then(function(response){
         var data = response.data;
         // On récupère le nombre de surfaces
         var nb_surfaces = data.parameters.rows;
-        
+        var colors = sampleService.liste_color;
         $scope.nom_polygone={}
         for(var i=0; i<nb_surfaces; i++){
             $scope.nom_polygone[i]={}
+            
+            couleur = getRandomColor()
+            sampleService.liste_color[i]=couleur;
+            $scope.nom_polygone[i].couleur = couleur
             $scope.nom_polygone[i].nom = "Surface "+i;
             $scope.nom_polygone[i].href = "#!/surface/"+i;
         }
