@@ -44,7 +44,6 @@ app.controller('map', function($scope, $http, sampleService) {
                 $scope.surfaces[i].centre = data.records[i].geometry.coordinates;
                
                 var couleur= sampleService.liste_color[i];
-                console.log(couleur)
                 $scope.surfaces[i].couleurinterieur = couleur;
                 $scope.surfaces[i].opacitecontour = "0.8";
                 $scope.surfaces[i].opaciteinterieur = "1";
