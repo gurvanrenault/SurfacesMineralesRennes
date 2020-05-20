@@ -3,13 +3,17 @@ var app = angular.module('app', ['ngMap','ngRoute']);
 // On configure l'application  en définissant les routes 
 app.config(function($routeProvider) {
     $routeProvider
+        .when('/home', {
+            templateUrl: './html/global.html',
+            controller: 'map'
+        })
         .when('/', {
             templateUrl: './html/global.html',
             controller: 'map'
         })
 		.when('/surface/:id', {
-			templateUrl: './html/surface.html',
-			controller: 'view'
+			templateUrl: './html/global.html',
+			controller: 'map'
         });
     });
 // On crée un service pour que l'on puisse partagé des variables entre contrôleur
@@ -17,8 +21,12 @@ app.service("sampleService", function () {
     this.liste_color = {}
 });		
 // Controleur de la carte affichant toutes les surfaces 
-app.controller('map', function($scope, $http, sampleService) {
-
+app.controller('map', function($scope,$routeParams,$http, sampleService) {
+    $scope.erreur = {};
+    $scope.erreur.message ="";
+    $scope.erreur.display ="none";
+    var id = $routeParams.id ;
+   
     // Requête ajax récupérant les polygones représentants les surfaces minérales
     $http.get("https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=surfaces-minerales-du-jardin-du-thabor")
         // En cas de succès (code retour = 200)
@@ -31,24 +39,45 @@ app.controller('map', function($scope, $http, sampleService) {
             $scope.surfaces = {};
             $scope.nom_polygone={}
             // On crée le dictionnarie contenant les polygones et leurs paramètres
+            // Si aucun identifiant n'est précisé 
+            if (typeof id == 'undefined') {
+                for(var i=0; i<nb_surfaces; i++){
+                    // Création de la nouvelle surface
+                    $scope.surfaces[i] = {};
 
-            for(var i=0; i<nb_surfaces; i++){
-                // Création de la nouvelle surface
-                $scope.surfaces[i] = {};
-
-                // Création du chemin
-                var chemin = data.records[i].fields.geo_shape.coordinates[0];
-                $scope.surfaces[i].chemin = [];
-                for(var j=0; j<chemin.length; j++){
-                    $scope.surfaces[i].chemin.push([chemin[j][1], chemin[j][0]])
+                    // Création du chemin
+                    var chemin = data.records[i].fields.geo_shape.coordinates[0];
+                    $scope.surfaces[i].chemin = [];
+                    for(var j=0; j<chemin.length; j++){
+                        $scope.surfaces[i].chemin.push([chemin[j][1], chemin[j][0]])
+                    }
+                    $scope.surfaces[i].centre = data.records[i].geometry.coordinates;
+                    // On récupère la couleur attribué à la surface  
+                    var couleur= sampleService.liste_color[i];
+                    $scope.surfaces[i].couleurinterieur = couleur;
+                
+            
                 }
-                $scope.surfaces[i].centre = data.records[i].geometry.coordinates;
-                // On récupère la couleur attribué à la surface  
-                var couleur= sampleService.liste_color[i];
-                $scope.surfaces[i].couleurinterieur = couleur;
-                $scope.surfaces[i].opacitecontour = "0.8";
-                $scope.surfaces[i].opaciteinterieur = "1";
-           
+            }
+            // Vérification de l'identifiant 
+            else if (id< nb_surfaces && id >=0){
+                
+                $scope.surfaces[0] = {};
+                var chemin = data.records[id].fields.geo_shape.coordinates[0];
+                    $scope.surfaces[0].chemin = [];
+                    for(var j=0; j<chemin.length; j++){
+                        $scope.surfaces[0].chemin.push([chemin[j][1], chemin[j][0]])
+                    }
+                    $scope.surfaces[0].centre = data.records[id].geometry.coordinates;
+                    // On récupère la couleur attribué à la surface  
+                    var couleur= sampleService.liste_color[id];
+                    $scope.surfaces[0].couleurinterieur = couleur;
+                   
+            }
+            else{
+              // Erreur 
+              $scope.erreur.message = "Surface Introuvable. Veuillez entrer un identifiant correct"
+              $scope.erreur.display = "block"
             }
             
         });
@@ -79,46 +108,8 @@ app.controller('selector', function($scope,$http,sampleService) {
             $scope.nom_polygone[i].nom = "Surface "+i;
             $scope.nom_polygone[i].href = "#!/surface/"+i;
         }
-        console.log($scope.nom_polygone);
+      
     });
 
 
 });
-
-// Controleur pour afficher une surface de la carte
-app.controller('view', function($scope,$routeParams,$http) {
-    var id = $routeParams.id ;
-    $http.get("https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=surfaces-minerales-du-jardin-du-thabor")
-        // En cas de succès (code retour = 200)
-        .then(function(response){
-            var data = response.data;
-            // On récupère le nombre de surfaces
-            var nb_surfaces = data.parameters.rows;
-
-            // On crée un dictionnairequi va contenir toutes les surfaces
-            var surfaces = {};
-           
-            // On crée le dictionnarie contenant les polygones et leurs paramètres
-
-            for(var i=0; i<nb_surfaces; i++){
-                // Création de la nouvelle surface
-                surfaces[i] = {};
-
-                // Création du chemin
-                var chemin = data.records[i].fields.geo_shape.coordinates[0];
-                surfaces[i].chemin = [];
-                for(var j=0; j<chemin.length; j++){
-                    surfaces[i].chemin.push([chemin[j][1], chemin[j][0]])
-                }
-                surfaces[i].centre = data.records[i].geometry.coordinates;
-                surfaces[i].couleurinterieur = "#FF0000";
-                surfaces[i].opacitecontour = "0.8";
-                surfaces[i].opaciteinterieur = "0.35";
-           
-            }
-            $scope.surface = surfaces[id];
-            
-        });
-
-});
-

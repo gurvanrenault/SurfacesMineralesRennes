@@ -12,3 +12,11 @@ ul{
 ng-map{
     height: 500px !important;
 }
+.alert-danger-custom{
+   
+    text-align: center !important;
+    color: whitesmoke !important;
+    background-color: #b52020e0 !important;
+    margin-bottom: 0 !important;
+    font-size: small !important;
+}
