@@ -1,23 +1,24 @@
 
-<div ng-controller="map" >
-  <div class="alert alert-danger alert-danger-custom" role="alert" style="display: {{erreur.display}};">
-    {{erreur.message}} 
-  </div>
+<div ng-controller="map">
+    <div class="alert alert-danger alert-danger-custom" role="alert" style="display: {{erreur.display}};">
+        {{erreur.message}}
+    </div>
+
     <ng-map id="googlemap"
-    zoom="17"
-    default-style="false"
-    center="48.114499, -1.669880"
-    map-type-id="TERRAIN"
-    onload="setMapSize()"
-    >
-   <shape name="polygon"
-     ng-repeat="surface in surfaces"
-     paths="{{surface.chemin}}"
-     stroke-opacity="0.8"
-     stroke-weight="2"
-     fill-color={{surface.couleurinterieur}}
-     fill-opacity="1">
-   </shape>
-   </ng-map>
- </div>
+            zoom="17"
+            default-style="false"
+            center="48.114499, -1.669880"
+            map-type-id="TERRAIN"
+            onload="setMapSize()">
+
+        <shape name="polygon"
+               ng-repeat="surface in surfaces"
+               paths="{{surface.chemin}}"
+               stroke-opacity="0.8"
+               stroke-weight="2"
+               fill-color={{surface.couleurinterieur}}
+               fill-opacity="1">
+        </shape>
+    </ng-map>
+</div>
  

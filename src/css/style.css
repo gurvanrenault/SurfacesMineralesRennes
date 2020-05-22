@@ -1,19 +1,48 @@
+html, .row, .col-lg-2, .col-lg-8{
+    background-color: #EEEEEE;
+}
+
+.navbar, footer{
+    background-color: #F44336;
+    color: white;
+}
+
+#title{
+    color: white !important;
+}
+
+.col-lg-2{
+    border : solid red 5px;
+    border-radius: 10px;
+}
+
+.row{
+    padding-top: 50px;
+    padding-bottom: 75px;
+}
+
 ul{
     width: 100%;
 }
-.nav-link-select{
-    color: white !important;
-    text-align: center;
-}
-.nav-item-select{
-   border-radius: 2px;
-   margin-left: 3px;
-}
+
 ng-map{
     height: 500px !important;
 }
+
+.btn{
+    display: block;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 10px;
+}
+
+.navbar-brand{
+    width: 30%;
+    margin-left: 35%;
+    text-align: center;
+}
+
 .alert-danger-custom{
-   
     text-align: center !important;
     color: whitesmoke !important;
     background-color: #b52020e0 !important;

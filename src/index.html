@@ -33,28 +33,35 @@
 </head>
 <body>
 	<!-- Menu de Navigation-->
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand" href="./#!">Surfaces minérales du jardin du Thabor</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-		  <span class="navbar-toggler-icon"></span>
-		</button>
-		
-	  </nav>
-	<!-- Partie Applicative -->
-	<div ng-app='app'>
-		<!-- Contrôleur Selector : Afficher les différentes surfaces et séléctionner -->
-		<div ng-controller="selector">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			  <ul class="navbar-nav" >
-				  <li class="nav-item  nav-item-select active"  ng-repeat="p in nom_polygone" style="color:whitesmoke;width:{{size}}% !important;background-color: {{p.couleur}};">
-				  <a class="nav-link nav-link-select" href="{{p.href}}">{{p.nom}}<span class="sr-only">(current)</span></a>
-				  </li>
-			  </ul>
-			</nav>
+	<nav class="navbar navbar-expand-lg navbar-light">
+		<a class="navbar-brand" href="./#!" id="title">Surfaces minérales du jardin du Thabor</a>
+	</nav>
+
+	<!-- Partie applicative -->
+	<div ng-app='app' class="row">
+
+		<!-- Contrôleur Selector : Afficher les différentes surfaces et sélectionner -->
+		<div ng-controller="selector" class="col-lg-2">
+			<a class="btn" href="{{p.href}}" role="button" ng-repeat="p in nom_polygone" style="color:whitesmoke; background-color: {{p.couleur}};">
+				{{p.nom}}<span class="sr-only">(current)</span>
+			</a>
 		</div>
+
 		<!-- On affiche les données nécessaires-->
-		<div ng-view></div>
-		
+		<div ng-view class="col-lg-10"></div>
+
+		<div class="col-lg-1"></div>
 	</div>
+
+	<!-- Footer -->
+	<footer class="page-footer font-small blue">
+
+		<!-- Copyright -->
+		<div class="footer-copyright text-center py-3">© 2020 Copyright: Gurvan Renault & Alexandre Hamon
+		</div>
+		<!-- Copyright -->
+
+	</footer>
+
 </body>
 </html>
