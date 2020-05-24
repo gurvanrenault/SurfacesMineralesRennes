@@ -1,24 +1,30 @@
 html, .row, .col-lg-2, .col-lg-8{
-    background-color: #EEEEEE;
+    background-color: #dfe6e9;
 }
-
+body{
+    width: 100%;
+}
 .navbar, footer{
-    background-color: #F44336;
-    color: white;
+    background-color: #2d3436;
+    color: #dfe6e9;
 }
 
 #title{
-    color: white !important;
+    color: #dfe6e9 !important;
 }
 
 .col-lg-2{
-    border : solid red 5px;
-    border-radius: 10px;
+    border : solid white 5px;
+    border-width: thin;
+    border-radius: 5 px;
 }
 
 .row{
-    padding-top: 50px;
-    padding-bottom: 75px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 ul{
@@ -26,7 +32,9 @@ ul{
 }
 
 ng-map{
-    height: 500px !important;
+    height: 530px !important;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .btn{

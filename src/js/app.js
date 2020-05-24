@@ -110,5 +110,6 @@ app.controller('selector', function($scope,$http,sampleService) {
             $scope.nom_polygone[i].nom = "Surface "+i;
             $scope.nom_polygone[i].href = "#!/surface/"+i;
         }
+        console.log($scope.nom_polygone);
     });
 });
