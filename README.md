@@ -2,7 +2,7 @@
 
 ## Installation 
 ### Installer un serveur web
-#### Windows 
+### Windows 
 https://alcatiz.developpez.com/tutoriel/installer-wamp-windows10/
 #### Linux
 https://docs.ovh.com/fr/dedicated/installer-lamp-debian-ubuntu/
@@ -13,4 +13,4 @@ Ajoutez le contenu du dossier src/ à la racine de vos fichiers web que vous ave
 Ouvrez votre navigateur
 Entrer dans l'URL http://[nom_de_votre_serveur_web]:[port_de_connexion]/
 
-Voilà vous êtes conecté à votre application !! 
+Voilà vous êtes connecté à votre application !! 
